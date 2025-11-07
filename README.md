@@ -32,10 +32,8 @@ Run locally:
 
 ## Screenshots
 
-<div align="center">
-  ![Uploading Screenshot 2025-11-07 at 6.56.03 PM.png…]()
+<img width="1299" height="982" alt="Screenshot 2025-11-07 at 6 56 03 PM" src="https://github.com/user-attachments/assets/90642c0f-ce2d-4c56-be4a-c1f9c22c077d" />
 
-</div>
 
 *Example: A tiny terrier vs. a fluffy cat → 4-panel comic-style storyboard*
 
