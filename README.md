@@ -33,7 +33,7 @@ Run locally:
 ## Screenshots
 
 <div align="center">
-  <img src="https://via.placeholder.com/800x500/667eea/ffffff?text=Input+Screen" alt="Input" width="48%" />
+
   <img src="https://via.placeholder.com/800x500/764ba2/ffffff?text=Generated+Storyboard" alt="Output" width="48%" />
 </div>
 
