@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pitch Visualizer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>The Pitch Visualizer</h1>
+      <p class="subtitle">Transform your narrative into a compelling visual storyboard</p>
+    </header>
+
+    <div class="input-section">
+      <label for="narrativeText">Enter Your Story or Pitch:</label>
+      <textarea id="narrativeText" rows="8"
+        placeholder="Example: The tiny terrier spotted the fluffy Persian cat..."></textarea>
+
+      <div class="controls">
+        <div class="style-control">
+          <label for="styleSelect">Visual Style:</label>
+          <select id="styleSelect">
+            <option value="digital art">Digital Art</option>
+            <option value="photorealistic">Photorealistic</option>
+            <option value="watercolor illustration">Watercolor</option>
+            <option value="corporate professional photography">Corporate Professional</option>
+            <option value="comic book style">Comic Book</option>
+            <option value="minimalist flat design">Minimalist</option>
+            <option value="3D rendered">3D Rendered</option>
+          </select>
+        </div>
+        <button id="generateBtn" onclick="generateStoryboard()">Generate Storyboard</button>
+      </div>
+    </div>
+
+    <div id="loading" class="loading" style="display:none;">
+      <div class="spinner"></div>
+      <p>Generating your visual storyboard...</p>
+    </div>
+
+    <div id="error" class="error" style="display:none;"></div>
+
+    <div id="storyboard" class="storyboard"></div>
+  </div>
+
+  <script>
+    async function generateStoryboard() {
+      const text = document.getElementById('narrativeText').value.trim();
+      const style = document.getElementById('styleSelect').value;
+      if (!text) return showError("Please enter a story.");
+
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('error').style.display = 'none';
+      document.getElementById('storyboard').innerHTML = '';
+      document.getElementById('generateBtn').disabled = true;
+
+      try {
+        const res = await fetch('/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, style })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Generation failed");
+        displayStoryboard(data.storyboard);
+      } catch (e) {
+        showError(e.message);
+      } finally {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('generateBtn').disabled = false;
+      }
+    }
+
+    function displayStoryboard(panels) {
+      const container = document.getElementById('storyboard');
+      container.innerHTML = '<h2>Your Visual Storyboard</h2><div class="panels-grid">';
+
+      panels.forEach((p, i) => {
+        container.innerHTML += `
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-number">Scene ${i + 1}</div>
+            </div>
+
+            <!-- IMAGE IS NOW VISIBLE -->
+            <img src="${p.image_url}"
+                 alt="Scene ${i + 1}"
+                 loading="lazy"
+                 onerror="this.src='https://via.placeholder.com/1024x1024/cccccc/666666?text=No+Image'">
+
+            <div class="panel-content">
+              <p class="caption">${p.text}</p>
+
+              <details class="prompt-details">
+                <summary>View AI Prompt</summary>
+                <p class="prompt">${p.prompt}</p>
+              </details>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML += '</div>';
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('error');
+      el.textContent = "Error: " + msg;
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 6000);
+    }
+
+    // Ctrl+Enter shortcut
+    document.getElementById('narrativeText')
+      .addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') generateStoryboard();
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+flask
+openai
+nltk
+python-dotenv
+MarkupSafe
+jinja2
