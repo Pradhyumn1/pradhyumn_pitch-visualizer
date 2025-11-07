@@ -33,8 +33,8 @@ Run locally:
 ## Screenshots
 
 <div align="center">
+  ![Uploading Screenshot 2025-11-07 at 6.56.03 PM.png…]()
 
-  <img src="https://via.placeholder.com/800x500/764ba2/ffffff?text=Generated+Storyboard" alt="Output" width="48%" />
 </div>
 
 *Example: A tiny terrier vs. a fluffy cat → 4-panel comic-style storyboard*
